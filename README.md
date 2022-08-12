@@ -1,6 +1,7 @@
 # Practical Machine Learning for Computer Vision
 
-<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
+<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
+
 <img src="mlvision_book_animation.gif" height="200" /></a>
 
 오라일리(O'Reilly) 책의 오픈소스 코드
@@ -50,7 +51,7 @@ GCP 콘솔 https://console.cloud.google.com/ 을 열고 IAM 및 관리자 → �
 
 ### GCP 콘솔에서 노트북 만드는 곳으로 가기
 
-https://console.cloud.google.com/ 에서 GCP 콘솔을 열고 Vertex AI → Workbench로 이동한다. https://console.cloud.google.com/vertex-ai/workbench를 바로 열어도 된다.
+https://console.cloud.google.com/ 에서 GCP 콘솔을 열고 Vertex AI → Workbench로 이동한다. https://console.cloud.google.com/vertex-ai/workbench 를 바로 열어도 된다.
 
 페이지 상단의 +NEW NOTEBOOK을 클릭한다. TensorFlow Enterprise 2.6 with Tesla T4를 선택한다.
 
@@ -85,7 +86,7 @@ practical-ml-vision-book/03_image_models/03a_transfer_learning.ipynb로 이동�
 
 ### 셀 지우기
 
-Edit → Clear All Outputs을 선택해 셀을 지운다.
+Edit → Clear All Outputs를 선택해 셀을 지운다.
 
 ### 셀 실행하기
 
@@ -101,27 +102,27 @@ Edit → Clear All Outputs을 선택해 셀을 지운다.
 
 practical-ml-vision-book/05_create_dataset/05_split_tfrecord.ipynb 로 이동
 
-### 클라우드 스토리지 버킷 만들기Create a Cloud Storage bucket
+### 클라우드 스토리지 버킷 만들기
 
 브라우저 창을 따로 열어서 GCP 콘솔의 Cloud Storage 섹션 https://console.cloud.google.com/storage/browser 에서 버킷을 만든다. 이미 존재하는 이름으로는 버킷을 만들 수 없다.
 
 노트북 인스턴스가 있는 리전에 버킷이 있어야 한다.
 
-### Dataflow job 구성
+### Dataflow 작업 구성
 
-노트북의 맨 아래에서 다음 행이 있는 셀을 찾는다.
+노트북에더 다음 코드가 있는 셀(맨 아래에서 두 번째 셀)을 찾는다.
 ```python -m jpeg_to_tfrecord```
 
 BUCKET 설정을 이전 단계에서 만든 버킷 이름으로 바꾼다. 예를 들어, 다음과 같이 설정할 수 있다.
 ```BUCKET=abc-12345```
 
-### Dataflow job 실행
+### Dataflow 작업 실행
 
 Shift + Enter를 클릭해 셀을 실행
 
-### Dataflow job 모니터링
+### Dataflow 작업 모니터링
 
-GCP 콘솔의 Dataflow 섹션 https://console.cloud.google.com/dataflow/jobs 에서 Dataflow jow의 진행을 본다.
+GCP 콘솔의 Dataflow 섹션 https://console.cloud.google.com/dataflow/jobs 에서 Dataflow 작업 진행을 본다.
 작업이 완료되면 버킷에 데이터셋 3개가 만들어진 것을 볼수 있을 것이다.
 
 참고: 이 작업을 완료하는 데 20분이 걸린다. 따라서 다음 단계는 버킷 gs://practical-ml-vision-book/ 에 이미 만들어진 데이터셋으로 시작할 것이다.
@@ -137,7 +138,7 @@ practical-ml-vision-book/07_training/07c_export.ipynb로 이동
 
 ### 셀 지우기
 
-Edit → Clear All Outputs을 선택해 셀을 지운다.
+Edit → Clear All Outputs를 선택해 셀을 지운다.
 
 참고: 이 노트북은 완전한 데이터셋으로 훈련한다. GPU에서는 5분 정도면 끝나지만, CPU로는 훨씬 오래 걸린다. GPU가 아닌 CPU를 사용한다면, 첫 (00, 01) 샤드만 처리하도록 PATTERN_SUFFIX를 바꾸고 3 에포크만 훈련하라. 결과 모델은 별로 정확하지 않겠지만 적절한 시간 내에 다음 단계로 넘어갈 수 있을 것이다. 노트북의 “Training” 섹션의 첫 번째 셀에서 이렇게 변경할 수 있다.
 
@@ -156,7 +157,7 @@ practical-ml-vision-book/09_deploying/09b_rest.ipynb로 이동
 
 ### 셀 지우기
 
-Edit → Clear All Outputs을 선택해 셀을 지운다.
+Edit → Clear All Outputs를 선택해 셀을 지운다.
 
 ### 셀 실행하기
 
@@ -208,7 +209,7 @@ practical-ml-vision-book/10_mlops/10a_mlpipeline.ipynb로 이동
 두 번째 셀에서 KFPHOST 변수를 위에서 메모한 AI Platform Pipelines SDK 설정의 호스트명으로 바꾼다.
 셀 지우기
 
-Edit → Clear All Outputs을 선택해 셀을 지운다.
+Edit → Clear All Outputs를 선택해 셀을 지운다.
 
 ### 셀 실행하기
 
