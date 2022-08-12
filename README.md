@@ -1,327 +1,325 @@
 # Practical Machine Learning for Computer Vision
 
-<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
+<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
 <img src="mlvision_book_animation.gif" height="200" /></a>
 
-Open-sourced code from the O'Reilly book
+오라일리(O'Reilly) 책의 오픈소스 코드
 <a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
 Practical Machine Learning for Computer Vision</a>
 by Valliappa Lakshmanan, Martin Gorner, Ryan Gillard
 
 
-** This is not an official Google product **
+** 구글의 공식 제품이 아님**
 
 
-# Color images
+# 컬러 이미지
 
-Unfortunately, the print version of the book is not in color.
-For your convenience, all the images from the book can be found in the images folder
-of this repository.
+아쉽게도 책(원서)이 흑백으로 인쇄됐다.
+독자 편의를 위해, 컬러 이미지를 이 저장소의 images 폴더에 두었다.
 
 
-# Quick tour through the book
+# 간단히 둘러보기
 
-For a full tour of the book, see Full Tour (below)
+이 책에 대해 자세히 알고 싶으면 아래의 ‘제대로 둘러보기’를 보라.
 
-Machine learning on images is revolutionizing healthcare, manufacturing, retail, and many other sectors. Many previously difficult problems can now be solved by training machine learning models to identify objects in images. Our aim in the book Practical Machine Learning for Computer Vision was to provide intuitive explanations of the ML architectures that underpin this fast-advancing field, and to provide practical code to employ these ML models to solve practical problems involving classification, measurement, detection, segmentation, representation, generation, counting, and more.
+이미지에 대한 머신러닝(ML: machine learning)으로 인해 헬스케어, 제조, 소매 등 여러 분야에 혁신이 일어나고 있다. 이미지에서 객체(object)를 식별하도록 머신러닝 모델을 훈련함으로써, 과거에 풀기 어려웠던 여러 문제를 풀 수 있게 됐다. 이 책은 빠르게 발전하는 머신러닝 분야의 근간을 이루는 ML 아키텍처를 직관적으로 설명하고, 분류(classification), 측정(measurement), 검출(detection), 세분화(segmentation), 표현(representation), 생성(generation), 계수(counting) 등의 문제를 해결하는 실용적인 코드를 제공하고자 한다.
 
-Image classification is the “hello world” of deep learning. Therefore, this codelab also provides a practical end-to-end introduction to deep learning. It can serve as a stepping stone to other deep learning domains such as natural language processing. For more details, of course, we encourage you to read the book.
+이미지 분류는 딥러닝의 ‘헬로 월드’다. 그러므로 이 책은 딥러닝의 전 과정을 실용적인 관점에서 소개한다. 이 책은 자연어 처리와 같은, 딥러닝의 다른 도메인으로 가는 디딤돌 역할을 할 수 있다. 물론, 자세한 사항은 이 책을 읽어 보기 바란다.
 
-## What you’ll build
-In this quick tour, you’ll build an end-to-end machine learning model from the
-book’s GitHub repository for image understanding using Google Cloud Vertex AI.
-We will show you how to:
-* Start a Vertex AI Notebook
-* Prepare the 5-flowers dataset
-* Train a Transfer Learning EfficientNet model to classify flowers
-* Deploy the model
-* Explain its predictions
-* Invoke the model from a streaming pipeline.
+## 실습
+이 ‘간단한 소개’에서는 책의 깃허브 저장소에 있는, 이미지 이해를 위한 전 구간(end-to-end) 머신러닝 모델을 Google Cloud Vertex AI를 사용해서 만들어 본다.
+실습할 내용은 다음과 같다.
+* Vertex AI 노트북(Notebook) 시작하기
+* 5-flowers 데이터셋 준비
+* 꽃을 분류하는 전이 학습(Transfer Learning) 이피션트넷(EfficientNet) 모델(model)을 훈련(train)
+* 모델을 배포(deploy)
+* 예측(prediction)을 설명
+* 스트리밍 파이프라인에서 모델을 호출.
 
-<b> We recommend creating a brand new GCP project to try these out. Then, delete the project when you are done, to make sure that all resources have been deleted. </b>
+<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 자원이 지워졌는지 확인하라. </b>
 
-## 1. Setup a Vertex AI Workbench instance
+## 1. Vertex AI Workbench 인스턴스 셋업
 
-### Ensure that you have GPU quota
+### GPU 할당량 확인
 
-Visit the GCP console at https://console.cloud.google.com/ and navigate to IAM & Admin | Quotas. You can also navigate to it directly by visiting https://console.cloud.google.com/google.com/iam-admin/quotas 
+GCP 콘솔 https://console.cloud.google.com/ 을 열고 IAM 및 관리자 → 할당량으로 이동한다. 다음 주소를 바로 열어도 된다. https://console.cloud.google.com/iam-admin/quotas
 
-In the Filter, start typing Nvidia and choose NVIDIA T4 GPUs. Make sure you have a region with a limit greater than zero. If not, please request a quota increase.
+필터에 Nvidia까지 타자하고 NVIDIA T4 GPUs를 선택한다. 한도가 0보다 큰 리전이 있어야 한다. 그렇지 않은 경우 할당량 증가를 요청하라.
 
-Note: If you want, you can do this lab with only a CPU and not a GPU. Training will take longer. Just choose the non-GPU option in the next step.
+참고: 원한다면 이 실습에 GPU가 아닌 CPU를 사용해도 된다. 훈련은 더 오래 걸린다. 다음 단계에서 non-GPU 옵션을 선택하면 된다.
 
-### Navigate to Notebook creation part of GCP console
+### GCP 콘솔에서 노트북 만드는 곳으로 가기
 
-Visit the GCP console at https://console.cloud.google.com/ and navigate to Vertex AI | Workbench. You can also navigate to it directly by visiting https://console.cloud.google.com/vertex-ai/workbench 
+https://console.cloud.google.com/ 에서 GCP 콘솔을 열고 Vertex AI → Workbench로 이동한다. https://console.cloud.google.com/vertex-ai/workbench를 바로 열어도 된다.
 
-Click on +New Instance at the top of the page. Then, select TensorFlow Enterprise 2.6 with Tesla T4.
+페이지 상단의 +NEW NOTEBOOK을 클릭한다. TensorFlow Enterprise 2.6 with Tesla T4를 선택한다.
 
-### Create a Notebook instance
+### 노트북 인스턴스 만들기
 
-Name the instance mlvision-book-gpu
+인스턴스 이름은 mlvision-book-gpu로 지정
 
-Click on the checkbox to install the Nvidia driver automatically. Make sure to check the box to install the Nvidia driver. If you missed it, delete the instance and start again. 
+NVIDIA GPU 드라이버 자동 설치 체크박스를 클릭한다. NVIDIA 드라이버를 설치하려면 박스에 체크해야 한다. 안 했으면 인스턴스를 삭제하고 다시 만들어라.
 
-Click Create to accept the other defaults.
+만들기를 클릭해 그 밖의 기본값을 사용한다.
 
-This step will take about 10 minutes. 
+이 단계를 수행하는 데 10분 정도 걸린다.
 
-### Clone the book’s code repository
+### 책의 코드 저장소를 복제하기
 
-Click on the link to Open JupyterLab
+Open JupyterLab 링크를 클릭
 
-In JupyterLab, click on the git clone button (the right-most button at the top of the left panel). 
-In the textbox, type in: https://github.com/GoogleCloudPlatform/practical-ml-vision-book 
-Note: An alternative way to clone the repository is to launch a Terminal and then type:
+JupyterLab에서 git clone 버튼(왼쪽 패널의 상단 맨 오른쪽 버튼)을 클릭.
+텍스트박스에 다음을 타자한다. https://github.com/GoogleCloudPlatform/practical-ml-vision-book
+주의: 터미널을 열어서 다음을 타자해도 된다.
 ```git clone https://github.com/GoogleCloudPlatform/practical-ml-vision-book```
 
-<b>You may encounter an out of memory error with GPU if you execute multiple notebooks with Vertex AI Notebook. To avoid it, select "Shut Down All Kernels..." from the Kernel menu before opening a new notebook.</b>
+<b>Vertex AI Notebook으로 여러 노트북을 실행하면 GPU 메모리 부족 오류가 발생할 수 있다. 이를 피하려면, 새 노트북을 열기 전에 Kernel 메뉴의 "Shut Down All Kernels..."를 선택하라.</b>
 
-## 2. Train a Transfer Learning model
+## 2. 전이 학습 모델 훈련
 
-This notebook contains the core machine learning to do image classification. We will improve on this end-to-end workflow in later steps.
+이 노트북에는 이미지 분류를 하기 위한 핵심 머신러닝이 있다. 이후 단계에서 이것을 전 구간 워크플로에서 개선할 것이다.
 
-### Open notebook
+### 노트북 열기
 
-Navigate to practical-ml-vision-book/03_image_models/03a_transfer_learning.ipynb
+practical-ml-vision-book/03_image_models/03a_transfer_learning.ipynb로 이동한다.
 
-### Clear cells
+### 셀 지우기
 
-Clear cells by selecting Edit | Clear All Outputs
+Edit → Clear All Outputs을 선택해 셀을 지운다.
 
-### Run cells
+### 셀 실행하기
 
-Run cells one-by-one. Read the cell. Then, execute it by clicking Shift + Enter
+셀을 하나씩 실행한다. 셀을 읽는다. 그런 다음, Shift + Enter를 눌러 실행한다.
 
 
 
-## 3. Prepare ML datasets [Optional]
+## 3. ML 데이터셋 준비 [Optional]
 
-In this step, you will create training, validation, and test datasets that consist of data that has been prepared to make ML more efficient. The data will be written out as TensorFlow Records.
+이 단계에서는 ML의 효율을 높이도록 준비된 데이터를 포함하여 훈련, 검증, 테스트 데이터셋을 만든다. 데이터는 TensorFlow Records 형식으로 작성된다.
 
-### Open notebook
+### 노트북 열기
 
-Navigate to practical-ml-vision-book/05_create_dataset/05_split_tfrecord.ipynb
+practical-ml-vision-book/05_create_dataset/05_split_tfrecord.ipynb 로 이동
 
-### Create a Cloud Storage bucket
+### 클라우드 스토리지 버킷 만들기Create a Cloud Storage bucket
 
-In a separate browser window, navigate to the Storage section of the GCP console: https://console.cloud.google.com/storage/browser and create a bucket. The console will not allow you to create a bucket with a name that already exists.
+브라우저 창을 따로 열어서 GCP 콘솔의 Cloud Storage 섹션 https://console.cloud.google.com/storage/browser 에서 버킷을 만든다. 이미 존재하는 이름으로는 버킷을 만들 수 없다.
 
-The bucket should be in the same region as your notebook instance.
+노트북 인스턴스가 있는 리전에 버킷이 있어야 한다.
 
-### Configure the Dataflow job
+### Dataflow job 구성
 
-Skip to the bottom of the notebook and find the (last-but-one) cell that contains the line
+노트북의 맨 아래에서 다음 행이 있는 셀을 찾는다.
 ```python -m jpeg_to_tfrecord```
 
-Change the BUCKET setting to reflect the name of the bucket you created in the previous step. For example, you might set it to be:
+BUCKET 설정을 이전 단계에서 만든 버킷 이름으로 바꾼다. 예를 들어, 다음과 같이 설정할 수 있다.
 ```BUCKET=abc-12345```
 
-### Run Dataflow job
+### Dataflow job 실행
 
-Run the cell by clicking Shift + Enter
+Shift + Enter를 클릭해 셀을 실행
 
-### Monitor Dataflow job
+### Dataflow job 모니터링
 
-View the progress of the Dataflow job by navigating to the GCP console section for Dataflow: https://console.cloud.google.com/dataflow/jobs 
-When the job completes, you will see 3 datasets created in the bucket.
+GCP 콘솔의 Dataflow 섹션 https://console.cloud.google.com/dataflow/jobs 에서 Dataflow jow의 진행을 본다.
+작업이 완료되면 버킷에 데이터셋 3개가 만들어진 것을 볼수 있을 것이다.
 
-Note: This job will take about 20 minutes to complete, so we will do the next step starting from an already created dataset in the bucket gs://practical-ml-vision-book/
+참고: 이 작업을 완료하는 데 20분이 걸린다. 따라서 다음 단계는 버킷 gs://practical-ml-vision-book/ 에 이미 만들어진 데이터셋으로 시작할 것이다.
 
 
-## 4. Train and export a SavedModel
+## 4. 훈련 및 SavedModel 익스포트
 
-In this step, you will train a transfer learning model on data contained in TensorFlow Records. Then, you will export the trained model in SavedModel format to a local directory named export/flowers_model. 
+이 단계에서는, TensorFlow Records에 담긴 데이터로 전이 학습 모델을 훈련할 것이다. 그런 다음, SavedModel 포맷에 있는 훈련된 모델을 export/flowers_model이라는 이름의 로컬 디렉터리에 익스포트한다.
 
-### Open notebook
+### 노트북 열기
 
-Navigate to practical-ml-vision-book/07_training/07c_export.ipynb
+practical-ml-vision-book/07_training/07c_export.ipynb로 이동
 
-### Clear cells
+### 셀 지우기
 
-Clear cells by selecting Edit | Clear All Outputs
+Edit → Clear All Outputs을 선택해 셀을 지운다.
 
-Note: By default, this notebook trains on the complete dataset and will take about 5 minutes on a GPU, but take considerably longer on a CPU. If you are using a CPU and not a GPU, change the PATTERN_SUFFIX to process only the first (00, 01) shards and to train for only 3 epochs. The resulting model will not be very accurate but it will allow you to proceed to the next step in a reasonable amount of time. You can make this change in the first cell of the “Training” section of the notebook.
+참고: 이 노트북은 완전한 데이터셋으로 훈련한다. GPU에서는 5분 정도면 끝나지만, CPU로는 훨씬 오래 걸린다. GPU가 아닌 CPU를 사용한다면, 첫 (00, 01) 샤드만 처리하도록 PATTERN_SUFFIX를 바꾸고 3 에포크만 훈련하라. 결과 모델은 별로 정확하지 않겠지만 적절한 시간 내에 다음 단계로 넘어갈 수 있을 것이다. 노트북의 “Training” 섹션의 첫 번째 셀에서 이렇게 변경할 수 있다.
 
-### Run cells
+### 셀 실행하기
 
-Run cells one-by-one. Read the cell. Then, execute it by clicking Shift + Enter
+셀을 하나씩 실행한다. 셀을 읽는다. 그런 다음, Shift + Enter를 눌러 실행한다.
 
 
-## 5. Deploy model to Vertex AI
+## 5. Vertex AI에 모델을 배포
 
-In this step, you will deploy the model as a REST web service on Vertex AI, and try out online and batch predictions as well as streaming predictions.
+이 단계에서는 모델을 Vertex AI상의 REST 웹 서비스로 배포하고, 온라인 및 일괄 예측과 스트리밍 예측을 시도할 것이다.
 
-### Open notebook
+### 노트북 열기
 
-Navigate to practical-ml-vision-book/09_deploying/09b_rest.ipynb
+practical-ml-vision-book/09_deploying/09b_rest.ipynb로 이동
 
-### Clear cells
+### 셀 지우기
 
-Clear cells by selecting Edit | Clear All Outputs
+Edit → Clear All Outputs을 선택해 셀을 지운다.
 
-### Run cells
+### 셀 실행하기
 
-Run cells one-by-one. Read the cell. Then, execute it by clicking Shift + Enter
+셀을 하나씩 실행한다. 셀을 읽는다. 그런 다음, Shift + Enter를 눌러 실행한다.
 
 
-## 6. Create an ML Pipeline
-In this step, you will deploy the end-to-end ML workflow as an ML Pipeline so that you can run repeatable experiments easily.
+## 6. ML 파이프라인 만들기
+이 단계에서는 ML 파이프라인으로서 end-to-end ML 워크플로를 배포하여, 반복가능한 실험을 쉽게 실행 할 수 있도록 한다.
 
-Because Vertex AI Pipeline is still in preview, you will create pipelines that run OSS Kubeflow Pipelines on GKE. 
+Vertex AI Pipeline은 아직 프리뷰이므로, GKE에서 OSS Kubeflow Pipelines를 실행하는 파이프라인을 만들 것이다.
 
-### Launch Kubeflow Pipelines on GKE
+### GKE에서 Kubeflow Pipelines 시작
 
-Browse to https://console.cloud.google.com/ai-platform/pipelines/clusters and click on New Instance.
+https://console.cloud.google.com/ai-platform/pipelines/clusters를 열고 New Instance를 클릭한다.
 
-### Create GKE cluster
+### GKE 클러스터 만들기
 
-In the Marketplace, click Configure.
+Marketplace에서 Configure를 클릭한다.
 
-Click Create a new cluster.
+Create a new cluster를 클릭한다.
 
-Check the box to allow access to Cloud APIs
+Cloud API에 액세스를 허용하는 박스에 체크
 
-Make sure the region is correct.
+리전이 올바른지 확인한다.
 
-Click Create cluster. This will take about 5 minutes.
+Create cluster를 클릭한다. 이 작업에 약 5분이 걸린다.
 
-Deploy Kubeflow on the cluster
+클러스터에 Kubeflow를 배포
 
-Change the app instance name to mlvision-book
+앱 인스턴스 이름을 mlvision-book으로 변경
 
-Click Deploy.  This will take about 5 minutes.
+Deploy를 클릭한다.  이 작업에 약 5분이 걸린다.
 
-Note Kubeflow Host ID
+Kubeflow Host ID를 메모
 
-In the AI Platform Pipelines section of the console (you may need to click Refresh), click on Settings and note the Kubeflow Host ID. It will be something like https://40e09ee3a33a422-dot-us-central1.pipelines.googleusercontent.com
- 
+콘솔의 AI Platform Pipelines 섹션에서(Refresh를 클릭해야 할 것이다), Settings를 클릭하고 Kubeflow Host ID를 노트한다. https://40e09ee3a33a422-dot-us-central1.pipelines.googleusercontent.com 과 같이 되어 있을 것이다.
 
-### Open notebook
 
-Navigate to practical-ml-vision-book/10_mlops/10a_mlpipeline.ipynb
+### 노트북 열기
 
-### Install Kubeflow
+practical-ml-vision-book/10_mlops/10a_mlpipeline.ipynb로 이동
 
-Run the first cell to pip install kfp. 
+### Kubeflow 설치
 
-Then, restart the kernel using the button on the ribbon at the top of the notebook.
+첫 번째 셀에서 pip install kfp를 실행한다.
 
-In the second cell, change the KFPHOST variable to the hostname you noted down from the AI Platform Pipelines SDK settings.
-Clear cells
+그런 다음, 노트북 상단의 리본에 있는 버튼을 눌러 커널을 재시작한다.
 
-Clear cells by selecting Edit | Clear All Outputs
+두 번째 셀에서 KFPHOST 변수를 위에서 메모한 AI Platform Pipelines SDK 설정의 호스트명으로 바꾼다.
+셀 지우기
 
-### Run cells
+Edit → Clear All Outputs을 선택해 셀을 지운다.
 
-Run cells one-by-one. Read the cell. Then, execute it by clicking Shift + Enter
+### 셀 실행하기
 
-Click on the generated Run details link.
+셀을 하나씩 실행한다. 셀을 읽는다. 그런 다음, Shift + Enter를 눌러 실행한다.
 
-Wait for the workflow to complete.
+generated Run details 링크를 클릭한다.
 
+워크플로가 완료될 때까지 기다린다.
 
-## Congratulations
-Congratulations, you've successfully built an end-to-end machine learning model for image classification.
 
+## 축하
+축하한다! 이미지 분류를 위한 end-to-end 머신러닝 모델을 성공적으로 구축했다.
 
-# Full tour of book
 
-For a shorter exploration, see Quick Tour (above)
+# 제대로 둘러보기
 
-<b> We recommend creating a brand new GCP project to try these out. Then, delete the project when you are done, to make sure that all resources have been deleted. </b>
+짧은 탐험을 원하면 간단히 둘러보기(위쪽)를 보라.
 
-### 1. Ensure that you have GPU quota
+<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 자원이 지워졌는지 확인하라. </b>
 
-Visit the GCP console at https://console.cloud.google.com/ and navigate to IAM & Admin | Quotas. You can also navigate to it directly by visiting https://console.cloud.google.com/google.com/iam-admin/quotas 
+### 1. GPU 할당량 확인
 
-In the Filter, start typing Nvidia and choose NVIDIA T4 GPUs. Make sure you have a region with a limit greater than zero. If not, please request a quota increase.
+GCP 콘솔 https://console.cloud.google.com/ 을 열고 IAM 및 관리자 → 할당량으로 이동한다. 다음 주소를 바로 열어도 된다. https://console.cloud.google.com/iam-admin/quotas
 
-### 2. Navigate to Vertex Workbench creation part of GCP console
+필터에 Nvidia까지 타자하고 NVIDIA T4 GPUs를 선택한다. 한도가 0보다 큰 리전이 있어야 한다. 그렇지 않은 경우 할당량 증가를 요청하라.
 
-Visit the GCP console at https://console.cloud.google.com/ and navigate to Vertex AI | Vertex Workbench. You can also navigate to it directly by visiting https://console.cloud.google.com/vertex-ai/workbench/
+### 2. GCP 콘솔의 Vertex Workbench 만들기 부분으로 이동
 
-Click on +New Instance at the top of the page. Then, select the TensorFlow Enterprise 2.6 with Nvidia Tesla T4.
+GCP 콘솔 https://console.cloud.google.com/ 을 열고 Vertex AI → Vertex Workbench로 이동한다. https://console.cloud.google.com/vertex-ai/workbench/ 로 바로 가도 된다.
 
-### 3. Create a Notebook instance
+페이지 상단의 +NEW NOTEBOOK을 클릭한다. 그 다음에, TensorFlow Enterprise 2.6 with Nvidia Tesla T4를 선택한다.
 
-Name the instance mlvision-book-gpu
+### 3. 노트북 인스턴스 만들기
 
-Click on the checkbox to install the Nvidia driver automatically. Make sure to check the box to install the Nvidia driver. If you missed it, delete the instance and start again. 
+인스턴스 이름은 mlvision-book-gpu로 지정
 
-Click on Advanced
+NVIDIA GPU 드라이버 자동 설치 체크박스를 클릭한다. NVIDIA 드라이버를 설치하려면 박스에 체크해야 한다. 안 했으면 인스턴스를 삭제하고 다시 만들어라.
 
-Change Machine Type to n1-highmem-4
+Advanced를 클릭
 
-Change GPU Type to Nvidia Tesla T4
+Machine Type을 n1-highmem-4로 변경
 
-Change Disk | Data Disk Type to 300 GB
+GPU Type을 Nvidia Tesla T4로 변경
+
+Change Disk | Data Disk Type을 300 GB로
 
 Change Permission | Single User | your email address
 
-Click Create to accept the other defaults.
+만들기를 클릭해 그 밖의 기본값을 사용한다.
 
-This step will take about 10 minutes. 
+이 단계를 수행하는 데 10분 정도 걸린다.
 
-### 4. Create a Cloud Storage bucket
+### 4. 클라우드 스토리지 버킷 만들기Create a Cloud Storage bucket
 
-Navigate to the Storage section of the GCP console: https://console.cloud.google.com/storage/browser and create a bucket. 
-The console will not allow you to create a bucket with a name that already exists.
-The bucket should be in the same region as your notebook instance.
+GCP 콘솔의 Storage 섹션 https://console.cloud.google.com/storage/browser 으로 이동해서 버킷을 만든다.
+이미 존재하는 이름으로는 버킷을 만들 수 없다.
+노트북 인스턴스가 있는 리전에 버킷이 있어야 한다.
 
-### 5. Clone the book’s code repository
+### 5. 책의 코드 저장소를 복제하기
 
-Go to the Vertex Workbench section of the GCP console.
-Click on the link to Open JupyterLab
+GCP 콘솔의 Vertex Workbench 섹션으로 간다.
+Open JupyterLab 링크를 클릭
 
-In JupyterLab, click on the git clone button (the right-most button at the top of the left panel). 
-In the textbox, type in: https://github.com/GoogleCloudPlatform/practical-ml-vision-book 
-Note: An alternative way to clone the repository is to launch a Terminal and then type:
+JupyterLab에서 git clone 버튼(왼쪽 패널의 상단 맨 오른쪽 버튼)을 클릭.
+텍스트박스에 다음을 타자한다. https://github.com/GoogleCloudPlatform/practical-ml-vision-book
+주의: 터미널을 열어서 다음을 타자해도 된다.
 ```git clone https://github.com/GoogleCloudPlatform/practical-ml-vision-book```
 
-### 6. Run through the notebooks
+### 6. 노트북 실행
 
-* In JupyterLab, navigate to the folder practical-ml-vision-book/02_ml_models
-* Open the notebook 02a.  
-  * Edit | Clear All Outputs
-  * Read and run each cell one-by-one by typing Shift + Enter. (or click Run | Restart Kernel and Run All Cells) 
-  * Go to the list of running Terminals and Kernels (the second button from the top on the extreme left of JupyterLab)
-  * Stop the 02a notebook.  <b>Stop the Kernel every time you finish running a notebook.</b> Otherwise, you will run out of memory.
-* Now, open and run notebook 02b, and repeat steps listed above.
-* In Chapter 3, run *only* the flowers5 notebooks (3a and 3b on MobileNet).
-  * Run 3a_transfer_learning
-  * Run 3b_finetune_MOBILENETV2_flowers5 -- note that if AdamW is not found, you may have to restart the kernel. See instructions in notebook.
-  * Many of the flowers104 notebooks will require a more powerful machine. We did these notebooks using TPUs. See README_TPU.md for details. You can try adding more GPUs if you don't have access to TPUs but this has not been tested.
-* In Chapter 4
-  * Unet segmentation will work on a T4.
-  * *Works in TensorFlow 2.7+ only* Follow the Readme directions in the directory to try out RetinaNet. You'll need a high-bandwidth internet connection to download and upload the 12 GB dataset. Also, you need to create a new Workbench instance with TensorFlow 2.7+ (not 2.6).
+* JupyterLab에서 practical-ml-vision-book/02_ml_models 폴더로 이동
+* 02a 노트북을 연다.
+   * Edit | Clear All Outputs
+   * 각 셀을 읽고 Shift + Enter 키를 눌러 하나씩 실행한다. (또는 Run | Restart Kernel and Run All Cells를 클릭)
+   * list of running Terminals and Kernels로 간다(JupyterLab의 상단 맨 왼쪽의 두 번째 버튼)
+   * 02a 노트북을 중지한다.  <b>노트북 실행 완료 시마다 커널을 중지하라.</b> 그렇게 하지 않으면 메모리가 부족해진다.
+* 02b 노트북을 열어 실행하고, 위의 단계를 되풀이한다.
+* 3장에서 flowers5 노트북(3a와 3b의 모바일넷)*만* 실행한다.
+   * 3a_transfer_learning을 실행
+   * 3b_finetune_MOBILENETV2_flowers5를 실행-- AdamW를 찾을 수 없으면 커널을 재시작해야 할 수 있다. 노트북의 지시를 보라.
+   * flowers104 노트북 다수는 강력한 머신을 필요로 한다. 우리는 이런 노트북들에 TPU를 썼다. 자세한 사항은 README_TPU.md를 보라. TPU를 사용할 수 없다면 GPU를 추가해봐도 되겠지만, 그렇게는 테스트해보지 않았다.
+* 4장에서
+   * Unet 세분화는 T4에서만 작동할 것이다.
+   * *TensorFlow 2.7 이상에서만 작동* RetinaNet을 실습하려면 해당 디렉터리의 Readme에 있는 지시를 따른다. 12GB 데이터셋을 다운로드/업로드하려면 고대역폭 인터넷 연결이 필요하다. 또한 TensorFlow (2.6이 아니라) 2.7+용으로 새로운 Workbench 인스턴스를 만들어야 한다.
 
-* In Chapter 5, you can run the notebooks in any order.
-* In Chapter 6:
-  * Change the BUCKET variable in run_dataflow.sh
-  * Run the notebooks in order.
-  * 6h, the TF Transform notebook, is broken (most likely a Python dependency problem)
-  
-* In Chapter 7, run the notebooks in order.
-  * In 7c, make sure to change the BUCKET where marked.
-* In Chapter 9, run the notebooks in order. 
-  * Make sure to change ENDPOINT_ID, BUCKET, etc. to reflect your environment.
-* In Chapter 10:
-  * Start a Kubeflow Pipelines Cluster by visiting https://console.cloud.google.com/marketplace/product/google-cloud-ai-platform/kubeflow-pipelines
-  * Make sure to allow access to Cloud Platform APIs from the cluster
-  * Once cluster has been started, click "Deploy"
-  * Once deployed, click on the link to go to the Kubeflow Pipelines console and look at the Settings
-  * Note the HOST string passed
-  * In JupyterLab, edit the KFPHOST variable in 10a to reflect the cluster that you just started
-  * Run 10a and 10b
-* In Chapter 11, run the notebooks in order.
-* In Chapter 12, run the notebooks in order.
+* 5장에서는 노트북을 어느 순서로 실행해도 된다.
+* 6장에서:
+   * run_dataflow.sh의 BUCKET 변수를 변경
+   * 노트북을 순서대로 실행하라.
+   * 6h의 TF Transform 노트북은 깨졌음 (파이썬 의존성 문제)
 
-### Common issues that readers run into
-* <b>Out of memory.</b> Make sure that you have shut down all previous notebooks.
-* <b>AdamW not found.</b> Make sure that you restart the kernel when you start the notebook. AdamW has to be imported before first TensorFlow call.
-* <b>Bucket permissions problem</b> Make sure to change BUCKET variable to something you own.
-* <b>Weird GPU errors</b> Most likely, the GPU is out of memory. Please shut down other notebooks, restart kernel, and try again.
+* 7장에서는 노트북을 순서대로 실행하라.
+   * 7c에서는, 표시된 BUCKET을 꼭 바꿔야 한다.
+* 9장에서는, 노트북을 순서대로 실행한다.
+   * ENDPOINT_ID, BUCKET 등을 환경에 맞게 바꿔야 한다.
+* 10장에서:
+   * https://console.cloud.google.com/marketplace/product/google-cloud-ai-platform/kubeflow-pipelines 에서 Kubeflow Pipelines Cluster를 시작 
+   * 클러스터의 Cloud Platform APIs에 액세스를 허용해야 함
+   * 클러스터가 시작되면 "Deploy"를 클릭
+   * 배포되면, Kubeflow Pipelines 콘솔로 가는 링크를 클릭하고 Settings을 본다
+   * 전달된 HOST 문자열을 노트
+   * JupyterLab에서 10a의 KFPHOST 변수를 방금 시작시킨 클러스터를 가리키도록 편집
+   * 10a과 10b 실행
+* 11장에서는 노트북을 순서대로 실행한다.
+* 12장에서는 노트북을 순서대로 실행한다.
+
+### 문제 해결
+* <b>Out of memory.</b> 이전에 실행한 노트북을 종료하라.
+* <b>AdamW not found.</b> 노트북을 시작할 때 커널을 재시작하라. TensorFlow를 처음 호출하기 전에 AdamW를 임포트해야 한다.
+* <b>Bucket permissions problem</b> BUCKET 변수를 당신이 갖고 있는 것으로 바꿔라.
+* <b>Weird GPU errors</b> GPU 메모리가 부족한 것이 대부분이다. 다른 노트북을 모두 종료하고 커널을 재시작한 뒤 다시 시도한다.
 
 
-Feedback? Please file an Issue in the GitHub repo.
+피드백? 깃허브 저장소에 이슈를 올려달라.
