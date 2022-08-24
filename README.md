@@ -37,7 +37,7 @@ by Valliappa Lakshmanan, Martin Gorner, Ryan Gillard
 * 예측(prediction)을 설명
 * 스트리밍 파이프라인에서 모델을 호출.
 
-<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 자원이 지워졌는지 확인하라. </b>
+<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 리소스가 삭제됐는지 확인하라. </b>
 
 ## 1. Vertex AI Workbench 인스턴스 셋업
 
@@ -96,7 +96,7 @@ Edit → Clear All Outputs를 선택해 셀을 지운다.
 
 ## 3. ML 데이터셋 준비 [Optional]
 
-이 단계에서는 ML의 효율을 높이도록 준비된 데이터를 포함하여 훈련, 검증, 테스트 데이터셋을 만든다. 데이터는 TensorFlow Records 형식으로 작성된다.
+이 단계에서는 ML의 효율을 높이도록 준비된 데이터로 구성된 훈련, 검증, 테스트 데이터셋을 만든다. 데이터는 TensorFlow Records 형식으로 작성된다.
 
 ### 노트북 열기
 
@@ -110,11 +110,12 @@ practical-ml-vision-book/05_create_dataset/05_split_tfrecord.ipynb 로 이동
 
 ### Dataflow 작업 구성
 
-노트북에더 다음 코드가 있는 셀(맨 아래에서 두 번째 셀)을 찾는다.
+노트북에서 다음 코드가 있는 셀(맨 아래에서 두 번째 셀)을 찾는다.
 ```python -m jpeg_to_tfrecord```
 
 BUCKET 설정을 이전 단계에서 만든 버킷 이름으로 바꾼다. 예를 들어, 다음과 같이 설정할 수 있다.
 ```BUCKET=abc-12345```
+
 
 ### Dataflow 작업 실행
 
@@ -193,7 +194,7 @@ Deploy를 클릭한다.  이 작업에 약 5분이 걸린다.
 
 Kubeflow Host ID를 메모
 
-콘솔의 AI Platform 파이프라인 섹션에서(Refresh를 클릭해야 할 것이다), Settings를 클릭하고 Kubeflow Host ID를 노트한다. https://40e09ee3a33a422-dot-us-central1.pipelines.googleusercontent.com 과 같이 되어 있을 것이다.
+콘솔의 AI Platform 파이프라인 섹션에서(Refresh를 클릭해야 할 것이다), Settings를 클릭하고 Kubeflow Host ID를 적어둔다. `https://40e09ee3a33a422-dot-us-central1.pipelines.googleusercontent.com`과 같이 되어 있을 것이다.
 
 
 ### 노트북 열기
@@ -228,7 +229,7 @@ generated Run details 링크를 클릭한다.
 
 간단히 알아보고 싶으면 빠르게 둘러보기(위쪽)를 보라.
 
-<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 자원이 지워졌는지 확인하라. </b>
+<b> 실습을 위해 새로운 GCP 프로젝트를 만드는 것이 좋다. 실습을 마친 후에는 프로젝트를 삭제하고, 모든 리소스가 삭제됐는지 확인하라. </b>
 
 ### 1. GPU 할당량 확인
 
@@ -248,15 +249,15 @@ generated Run details 링크를 클릭한다.
 
 NVIDIA GPU 드라이버 자동 설치 체크박스를 클릭한다. NVIDIA 드라이버를 설치하려면 박스에 체크해야 한다. 안 했으면 인스턴스를 삭제하고 다시 만들어라.
 
-Advanced를 클릭
+고급 옵션을 클릭
 
-Machine Type을 n1-highmem-4로 변경
+머신 유형을 n1-highmem-4로 변경
 
-GPU Type을 Nvidia Tesla T4로 변경
+GPU 유형을 Nvidia Tesla T4로 변경
 
-Change Disk | Data Disk Type을 300 GB로
+디스크 → Data 디스크 크기를 300 GB로
 
-Change Permission | Single User | your email address
+권한 → Single User → 이메일 주소 입력
 
 만들기를 클릭해 그 밖의 기본값을 사용한다.
 
