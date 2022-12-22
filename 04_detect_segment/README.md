@@ -1,9 +1,9 @@
-# Trying out the RetinaNet sample
+# 레티나넷(RetinaNet) 샘플 실습 안내
 
-To try the RetinaNet sample, get a TensorFlow 2.7+ instance of Vertex Workbench
-It will not work with TensorFlow 2.6.
-* Run _download.ipynb -- Note that there are some manual instructions involved in the notebook.
-* Then, run _dataprep.ipynb
-* Then, run _train.ipynb
-* Then, run _predict.ipynb
+레티나넷 샘플을 실습해보려면, TensorFlow 2.7 이상의 Vertex Workbench 인스턴스가 필요하다.
+TensorFlow 2.6에서는 작동하지 않는다.
+* _download.ipynb 실행 -- 이 노트북에는 수작업으로 해야 하는 절차가 있다.
+* 그다음에 _dataprep.ipynb 실행
+* 그다음에 _train.ipynb 실행
+* 그다음에 _predict.ipynb 실행
 
