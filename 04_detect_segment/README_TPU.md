@@ -1,46 +1,37 @@
-# How to use TPUs (Tensor Processing Units)
+# TPU(텐서 처리 유닛) 사용법
  
- ## TPU-accelerated notebooks
+ ## TPU 가속 노트북
  
- You can  provision a TPU-accelerated notebook on Google's Vertex AI Platform. This script sums up the necessary gcloud commands:
- [create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh)
+ Google의 Vertex AI Platform에서 TPU 가속 노트북을 프로비저닝할 수 있다. 필요한 gcloud 명령어를 [create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh) 스크립트에 모아뒀다.
  
- Detailed instructions below.
+ 자세한 지침은 아래쪽에 있다.
  
- Cloud AI Platform notebooks work with TPU and TPU pods up to the largest TPUv3-2048 pod with 2048 cores.
+ Cloud AI Platform 노트북은 TPU 및 TPU 포드에서 작동하며, 가장 큰 포드는 2048 코어를 갖춘 TPUv3-2048이다.
   
- TPUs are also available for free on [Colaboratory](https://colab.sandbox.google.com/github/GoogleCloudPlatform/training-data-analyst/blob/master/courses/fast-and-lean-data-science/07_Keras_Flowers_TPU_xception_fine_tuned_best.ipynb) (TPU v2-8)
- and [Kaggle](https://www.kaggle.com/mgornergoogle/five-flowers-with-keras-and-xception-on-tpu) (TPU v3-8).
+ 또한 [Colaboratory](https://colab.sandbox.google.com/github/GoogleCloudPlatform/training-data-analyst/blob/master/courses/fast-and-lean-data-science/07_Keras_Flowers_TPU_xception_fine_tuned_best.ipynb)(TPU v2-8)와 [Kaggle](https://www.kaggle.com/mgornergoogle/five-flowers-with-keras-and-xception-on-tpu)(TPU v3-8)에서 무료로 TPU를 사용할 수 있다.
  
-TPU basics are [explained here](https://www.kaggle.com/docs/tpu).
+TPU 기초가 [이곳에 설명돼 있다](https://www.kaggle.com/docs/tpu).
 
-## Detailed instructions for provisioning a notebook with a Cloud TPU accelerator
+## Cloud TPU 가속기로 노트북을 프로비저닝하는 자세한 지침
 
-Please use the script [create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh)
-to create a Vertex AI Notebook VM along with a TPU in one go.
-The script ensures that both your VM and the TPU have the same version of Tensorflow. Detailed steps:
+[create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh) 스크립트를 사용해 TPU를 갖춘 Vertex AI Notebook VM을 한 번에 생성할 수 있다.
+이 스크립트는 VM과 TPU에 있는 Tensorflow의 버전이 일치하는지 확인한다. 자세한 단계는 다음과 같다.
 
- * Go to [Google cloud console](https://console.cloud.google.com/), create a new project with billing enabled.
- * Open cloud shell (>_ icon top right) so that you can type shell commands.
- * Get the script [create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh), save it to a file, chmod u+x so that you can run it
- * Run `gcloud init` to set up your project and select a default zone that
- has TPUs. You can check TPU availability in different zones in [Google cloud console](https://console.cloud.google.com/)
- Compute Engine > TPUs > CREATE TPU NODE by playing with the zone and tpu type fields. For this
- demo, you can use an 8-core TPU or a 32-core TPU pod. Both TPU v2 and v3 will work.
- Select a zone that has v3-8, v2-32, v2-8 or v3-32 availability depending on what you want to test.
- * run the TPU and VM creation script:<br/>
+ * [Google Cloud 콘솔](https://console.cloud.google.com/)으로 이동해, 결제를 활성화한 새 프로젝트를 만든다.
+ * 셸 명령을 입력할 수 있도록 Cloud Shell(오른쪽 상단 >_ 아이콘)을 연다.
+ * [create-tpu-deep-learning-vm.sh](https://raw.githubusercontent.com/GoogleCloudPlatform/training-data-analyst/master/courses/fast-and-lean-data-science/create-tpu-deep-learning-vm.sh) 스크립트를 파일에 저장하고, chmod u+x로 실행 퍼미션을 설정한다.
+ * `gcloud init`을 실행하여 프로젝트를 설정하고 TPU가 있는 기본 영역을 선택한다. [Google Cloud Console](https://console.cloud.google.com/) Compute Engine > TPU > TPU 노드 만들기에서 영역 및 TPU 유형 필드를 사용하여 여러 영역에서 TPU 가용성을 확인할 수 있다. 이 데모에서는 8코어 TPU 또는 32코어 TPU Pod를 사용할 수 있다. TPU v2와 v3 모두 작동한다.
+  영역에 따라 선택할 수 있는 TPU 유형(v3-8, v2-32, v2-8, v3-32)이 다르므로 테스트 목적에 맞게 영역을 고른다.
+ * TPU 및 VM 생성 스크립트를 실행한다.<br/>
  `./create-tpu-deep-learning-vm.sh choose-a-name --tpu-type v3-8`
- * You can specify a Tensorflow version with `--version=2.5.0` or use `--nightly`. Most Tensorflow versions are available for TPU but sometimes a specific major.minor version nuber is required. For example, 2.3 or 2.4.2 will work but 2.4 will not.
- * When the machines are up, go to [Google cloud console](https://console.cloud.google.com/) Vertex AI > Notebooks
- and click OPEN JUPYTERLAB in front of the VM you just created.
- * Once in Jupyter, open a terminal and clone this repository:<br/>
- `git clone https://github.com/GoogleCloudPlatform/practical-ml-vision-book.git`
+ * Tensorflow 버전을 `--version=2.5.0`로 지정하거나 `--nightly`를 사용할 수 있다. 대부분의 Tensorflow 버전을 TPU에서 사용할 수 있지만, 특정 메이저.마이너 버전이 필요할 수도 있다. 예를 들어 2.3이나 2.4.2는 작동하지만 2.4는 작동하지 않는다.
+ * 머신이 기동되면, [Google cloud 콘솔](https://console.cloud.google.com/) Vertex AI > Workbench로 가서 방금 생성한 VM의 OPEN JUPYTERLAB 열기를 클릭한다.
+ * Jupyter에서, 터미널을 열고 이 저장소를 복제한다.<br/>
+ `git clone https://github.com/ychoi-kr/practical-ml-vision-book-ko.git`
 
-You are ready to train on TPU. Any of the models in Chapet 3 and Chapter 4 support TPU training.
+TPU로 훈련할 준비가 됐다. 3장과 4장의 모델들은 모두 TPU 훈련을 지원한다.
 
-TPU can also be provisioned manually in the [cloud console](https://console.cloud.google.com/). Go to
-Compute Engine > TPUs > CREATE TPU NODE. Use the version selector to select the same version of Tensorflow as the one in your VM.
-The script does the same thing but on the command line using the two
-gcloud commands for creating a VM and a TPU. It adds a couple of perks:
-the VM supports Jupyter notebooks out of the box, it has the TPU_NAME environment variable set pointing to your TPU,
-and it can be upgraded to tf-nightly if you need cutting edge tech: add the `--nightly` parameter when you run the script.
+[cloud 콘솔](https://console.cloud.google.com/)에서 수동으로 TPU를 프로비전할 수도 있다.
+Compute Engine > TPU > TPU 노드 만들기로 이동한다. 버전 선택 상자를 사용해 VM에 있는 것과 같은 버전의 Tensorflow 버전을 골라라.
+스크립트는 동일한 작업을 수행하지만 명령줄에서 VM 및 TPU 생성을 위한 두 개의 gcloud 명령어를 사용한다.
+VM은 기본적으로 Jupyter 노트북을 지원하고 TPU_NAME 환경 변수가 TPU를 가리키도록 설정되어 있으며, 최첨단 기술이 필요한 경우에는 스크립트를 실행할 때 `--nightly` 매개변수를 추가함으로써 tf-nightly로 업그레이드할 수 있다.
