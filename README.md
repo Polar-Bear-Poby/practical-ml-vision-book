@@ -1,22 +1,14 @@
-# Practical Machine Learning for Computer Vision
+# 실전! 컴퓨터비전을 위한 머신러닝
 
-<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
+(원제: Practical Machine Learning for Computer Vision)
+
+발리아파 락슈마난, 마틴 괴르너, 라이언 길라드 지음 / 최용 옮김
+
+홈페이지: <https://wikibook.co.kr/mlvision/>
 
 <img src="mlvision_book_animation.gif" height="200" /></a>
 
-오라일리(O'Reilly) 책의 오픈소스 코드
-<a href="https://www.amazon.com/Practical-Machine-Learning-Computer-Vision/dp/1098102363">
-Practical Machine Learning for Computer Vision</a>
-by Valliappa Lakshmanan, Martin Gorner, Ryan Gillard
-
-
 ** 구글의 공식 제품이 아님**
-
-
-# 컬러 이미지
-
-아쉽게도 책(원서)이 흑백으로 인쇄됐다.
-독자 편의를 위해, 컬러 이미지를 이 저장소의 images 폴더에 두었다.
 
 
 # 빠르게 둘러보기
