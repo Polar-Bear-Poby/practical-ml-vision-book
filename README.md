@@ -6,7 +6,7 @@
 
 홈페이지: <https://wikibook.co.kr/mlvision/>
 
-<img src="mlvision_book_animation.gif" height="200" /></a>
+<img src="bookcover.jpg" height="200" /></a>
 
 ** 구글의 공식 제품이 아님**
 
